@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>viewport缩放适配</title>
+    <script>
+        let WIDTH = 750
+        /* 适配方法：viewport缩放适配 */
+        function mobileAdapter() {
+            let initialScale = screen.width / WIDTH
+            let content = `width=750,initial-scale=${initialScale},minimum-scale=${initialScale},maximum-scale=${initialScale}`
+            let meta = document.querySelector('meta[name=viewport]')
+            if (!meta) {
+                meta = document.createElement('meta')
+                meta.setAttribute('name', 'viewport')
+                document.head.append(meta)
+            }
+            meta.setAttribute('content', content)
+        }
+        mobileAdapter()
+        window.onorientationchange = mobileAdapter
+    </script>
+    <style>
+        body,
+        figure {
+            margin: 0;
+        }
+
+        body {
+            color: #fff;
+            background: url(https://appweb.lizhi.fm/assets/images/liveShare/bg.jpg) center center no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        header {
+            font-size: 28px;
+            display: flex;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        header>span {
+            flex: 1;
+            line-height: 84px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        header>span.active {
+            color: #fff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        main {
+            padding: 0 30px;
+        }
+
+        main figure {
+            padding: 32px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        main figure>img {
+            width: 680px;
+            height: 420px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        main figure>h2 {
+            font-size: 40px;
+        }
+
+        main figure .topic {
+            color: rgba(255, 255, 255, 0.3)
+        }
+
+        main .author {
+            display: flex;
+            align-items: center;
+        }
+
+        main .author img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 64px;
+        }
+
+        main .author span {
+            color: rgba(255, 255, 255, 0.3);
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="active" target="hot">热门</span>
+        <span target="focus">关注</span>
+    </header>
+    <main>
+        <section id="hot">
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+                <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm/studio/2019/05/28/2739736615570232886.jpg" alt="">
+                <h2>音乐与你同在<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+                <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+        </section>
+        <section id="focus"></section>
+    </main>
+    <script>
+        //优点： 开发过程很简单，适配范围广
+        //缺点： 页面整体放大缩小，对于不想缩放的元素无法控制
+    </script>
+</body>
+
+</html>
