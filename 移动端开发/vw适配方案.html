@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>相对单位vw适配方案</title>
+    <script>
+        // 设计稿的宽度为750px，将它看成是100vw，并使用CSS变量。
+        const WIDTH = 750
+        document.documentElement.style.setProperty('--width', (100/WIDTH))
+    </script>
+</head>
+<body>
+    <header>
+        <span class="active" target="hot">热门</span>
+        <span target="focus">关注</span>
+      </header>
+      <main>
+        <section id="hot">
+          <figure>
+            <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+            <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+            <div class="author">
+              <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+              <span>爱尚独家记忆</span>
+            </div>
+          </figure>
+          <figure>
+            <img src="http://cdnimg103.lizhi.fm/studio/2019/05/28/2739736615570232886.jpg" alt="">
+            <h2>音乐与你同在<span class="topic">#点歌#</span></h2>
+            <div class="author">
+              <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+              <span>爱尚独家记忆</span>
+            </div>
+          </figure>
+          <figure>
+            <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+            <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+            <div class="author">
+              <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+              <span>爱尚独家记忆</span>
+            </div>
+          </figure>
+        </section>
+        <section id="focus"></section>
+      </main>
+    
+      <style>
+        :root {
+          --color: red; 
+        }
+        body, figure {
+          margin: 0;
+        }
+        body {
+          color: #fff;
+          background: url(https://appweb.lizhi.fm/assets/images/liveShare/bg.jpg) center center no-repeat;
+          background-size: cover;
+          min-height: 100vh;
+        }
+        header {
+          font-size: calc(28vw * var(--width));
+          display: flex;
+          padding: 0 calc(20vw * var(--width));
+          text-align: center;
+        }
+        header > span {
+          flex: 1;
+          line-height: calc(84vw * var(--width));
+          color: rgba(255, 255, 255, 0.3);
+        }
+        header > span.active {
+          color: #fff;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        main {
+          padding: 0 calc(30vw * var(--width));
+        }
+        main figure {
+          padding: calc(32vw * var(--width)) 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        main figure > img {
+          width: calc(680vw * var(--width));
+          height: calc(420vw * var(--width));
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        main figure > h2 {
+          font-size: calc(40vw * var(--width));
+        } 
+        main figure .topic {
+          color: rgba(255, 255, 255, 0.3)
+        }
+        main .author {
+          display: flex;
+          align-items: center;
+        }
+        main .author img {
+          width: calc(64vw * var(--width));
+          height: calc(64vw * var(--width));
+          object-fit: cover;
+          border-radius: calc(64vw * var(--width));
+        }
+        main .author span {
+          color: rgba(255, 255, 255, 0.3);
+          margin-left: calc(20vw * var(--width));
+          font-size: calc(32vw * var(--width));
+        }
+    
+      </style>
+   <script>
+       /* 如果设置viewport，content=“width=device-width,那么在移动设备中渲染的页面实际宽度”*/
+       /*将不会是980px，而是移动设备的实际宽度(也即设备独立像素)，如iphoneX为375 * 812。此时*/
+       /*CSS像素与设备独立像素一致，一个CSS像素就是一个设备独立像素。*/
+
+        // 适配方法:以原型稿的宽度和标准开发页面，在手机上部分内容根据屏幕宽度等比放大或者缩小,
+        //而部分内容不变或者按需受控变化,需要随屏幕宽度等比缩放的元素用相对单位 rem或者vw，不需
+        //要随屏幕宽度缩放的元素用固定单位px。
+
+        /* 
+            此方法需要将viewport设置为设备宽度(即设备独立像素),不需要缩放，此时页面缩放比为1。这
+        样设置完之后，CSS像素与设备宽度对应起来，一个CSS像素等于一个设备独立像素，这样就可以按照
+        设计稿上的标注的百分比进行缩放了。例如，设计稿宽度为750px,一个盒子的宽度为100px，那么此
+        时换算成vw为 (100/750 * 100)vw,此时只要将css设为(100/750 * 100)vw即可实现在移动端的缩放，
+        对于不想缩放的元素样式，例如边框，就直接用px作为单位即可，此时设置几个px那就等于几个设备
+        独立像素。
+        */
+    
+   </script> 
+</body>
+</html>
