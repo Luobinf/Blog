@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态rem适配方案</title>
+    <script>
+        let WIDTH = 750  //设计稿宽度
+        /* 适配方法：动态rem适配方案 */
+        function mobileAdapter() {
+            let html = document.documentElement
+            console.log(html)
+            //这样换算之后设计稿上为40px，那么实际就写 0.4em
+            html.style.fontSize = screen.width / WIDTH * 100 + 'px'
+        }
+        mobileAdapter()
+        window.onorientationchange = mobileAdapter
+    </script>
+    <style>
+        body,
+        figure {
+            margin: 0;
+        }
+
+        body {
+            color: #fff;
+            background: url(https://appweb.lizhi.fm/assets/images/liveShare/bg.jpg) center center no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        header {
+            font-size: 0.28rem;
+            display: flex;
+            padding: 0 0.2rem;
+            text-align: center;
+        }
+
+        header>span {
+            flex: 1;
+            line-height: 0.84rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        header>span.active {
+            color: #fff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        main {
+            padding: 0 0.3rem;
+        }
+
+        main figure {
+            padding: 0.32rem 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        main figure>img {
+            width: 6.8rem;
+            height: 4.2rem;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        main figure>h2 {
+            font-size: 0.4rem;
+        }
+
+        main figure .topic {
+            color: rgba(255, 255, 255, 0.3)
+        }
+
+        main .author {
+            display: flex;
+            align-items: center;
+        }
+
+        main .author img {
+            width: 0.64rem;
+            height: 0.64rem;
+            object-fit: cover;
+            border-radius: 0.64rem;
+        }
+
+        main .author span {
+            color: rgba(255, 255, 255, 0.3);
+            margin-left: 0.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="active" target="hot">热门</span>
+        <span target="focus">关注</span>
+    </header>
+    <main>
+        <section id="hot">
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+                <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm/studio/2019/05/28/2739736615570232886.jpg" alt="">
+                <h2>音乐与你同在<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+            <figure>
+                <img src="http://cdnimg103.lizhi.fm//studio/2019/05/10/2736467140436393014.jpg" alt="">
+                <h2>举例0.01m<span class="topic">#点歌#</span></h2>
+                <div class="author">
+                    <img src="http://cdnimg103.lizhi.fm/user/2019/05/28/2739819480224172034_80x80.jpg" alt="头像">
+                    <span>爱尚独家记忆</span>
+                </div>
+            </figure>
+        </section>
+        <section id="focus"></section>
+    </main>
+    <script>
+       //动态rem适配方案
+       //  对于需要随屏幕宽度等比缩放的元素使用相对单位rem，与使用vw单位类似。对于不需要
+       //随着屏幕缩放而缩放的，例如边框、阴影等，则直接写px即可。
+    </script>
+</body>
+
+</html>
