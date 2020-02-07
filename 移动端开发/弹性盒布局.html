@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>弹性盒布局</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <section>
+      <img src="http://cdn.jirengu.com/book.jirengu.com/img/22.jpg">
+      <div class="detail">
+        <h2>雪山</h2>
+        <p>雪山的介绍</p>
+      </div>
+    </section>
+    <section>
+      <img src="http://cdn.jirengu.com/book.jirengu.com/img/20.jpg">
+      <div class="detail">
+        <h2>深林</h2>
+        <p>深林的介绍深林的介绍深林的介绍深林的介绍</p>
+      </div>
+    </section>
+    <section>
+      <img src="http://cdn.jirengu.com/book.jirengu.com/img/19.jpg">
+      <div class="detail">
+        <h2>相框</h2>
+        <p>我是相框啊我是相框啊我是相框啊我是相框啊我是相框啊我是相框啊我是相框啊</p>
+      </div>
+    </section>
+    <section>
+      <img src="http://cdn.jirengu.com/book.jirengu.com/img/18.jpg">
+      <div class="detail">
+        <h2>人</h2>
+        <p>人的介绍</p>
+      </div>
+    </section>
+
+    <style>
+
+      section {
+        display: flex;
+        padding: 10px 0;
+        margin: 10px;
+        border-bottom: 1px solid #ccc;
+        background: #fff;
+      }
+
+      section > img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+      }
+
+      section .detail {
+        margin-left: 10px;
+        flex: 1;
+      }
+
+      section .detail h2 {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+
+      section .detail p {
+        font-size: 14px;
+        color: #676767;
+      }
+
+    </style>
+    <script>
+        // 原理:不需要等比缩放，页面元素使用固定单位。使用弹性盒(flex)做布局，可结合媒体查询调整文字大小。
+    </script>
+  </body>
+</html>
