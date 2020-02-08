@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>tap击穿</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 30px;
+      font-size: 60px;
+    }
+    .mask {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 30px;
+
+    }
+    .close {
+      background: red;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!--<a href="https://jirengu.com">饥人谷</a>-->
+  <span class="bg">饥人谷</span>
+  <p class="log">0</p>
+  <div class="mask">
+    <span class="close">X</span>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s)
+    const log = str => $('.log').innerText = str
+
+    let i = 1
+
+    $('.close').ontouchstart = (e) => {
+      $('.mask').style.display = 'none'
+      log('touched ' + (++i))
+    }
+
+    $('.bg').onclick = () => {
+      log('点击了背景')
+    }
+  </script>
+
+</body>
+</html>

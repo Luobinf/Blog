@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="300ms延迟演示，手机上打开连接，注释掉viewport" />
+    <meta charset="utf-8">
+    <title>300ms延迟</title>
+    
+  <meta name="viewport" content="width=device-width">
+ 
+</head>
+
+<body>
+    <div id="delay">click有延迟 </div>
+    <div id="no-delay">touchstart无延迟</div>
+    <div> <a id="link1" href="#1">链接1</a> <a id="link2" href="#2">链接2</a></div>
+    <div id="log"></div>
+
+    <style>
+        body {
+            font-size: 60px;
+        }
+    </style>
+
+    <script>
+        // 延迟的原因
+        //   iphone是无键盘全触屏手机的始祖，当时的网站都是为大屏幕设备所设计的
+        //（没有设置<meta name="viewport">），为了便于用户阅读浏览器引入了双
+        //击缩放的功能。手指在屏幕上快速点击两次，iOS 自带的 Safari 浏览器会
+        //将网页缩放至原始比例。那如何判断用户快速点击两次呢？假定用户点击后
+        //300ms内如果有第二次点击，就认为用户的目的是双击缩放而不是普通的点击页面元素。
+        //所以用户第一次点击一个链接后，必须等300ms，浏览器才能决定是否是跳转还是缩放页面。
+        //后来全触屏手机流行后，其他设备浏览器也开始效仿。
+        const $ = s => document.querySelector(s)
+        const log = str => $('#log').innerText = str
+
+        let t1, t2
+
+        $('#delay').ontouchstart = e => {
+            t1 = Date.now()
+            console.log(1)
+        }
+        $('#delay').ontouchmove = (e) => {
+            console.log(2)
+        }
+        $('#delay').ontouchend = (e) => {
+            console.log(3)
+        }
+        $('#delay').onclick = e => {
+            console.log(4)
+            log(Date.now() - t1)
+        }
+
+        $('#no-delay').ontouchstart = e => {
+            e.preventDefault()
+            log('touchstart无延迟')
+        }
+
+        $('#link1').ontouchstart = e => {
+            t2 = Date.now()
+        }
+
+        $('#link2').ontouchstart = e => {
+            t2 = Date.now()
+        }
+
+        window.onhashchange = () => {
+            log(`link: ${Date.now() - t2}ms`)
+        }
+    </script>
+</body>
+
+</html>

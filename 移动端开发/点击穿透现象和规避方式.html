@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>点击穿透现象</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        @keyframes fade {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            color: red;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* display: none; */
+            padding: 0 10px;
+        }
+        .mask.fade {
+            animation: fade 0.3s;
+        }
+        .close{
+            padding: 5px;
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <a href="https:www.baidu.com" id="test" target="_self">百度一下</a>
+    <!-- <span id="test">骆斌</span> -->
+    <div class="mask">
+        <span class="close">X</span>
+    </div>
+    <div id="log">
+        没有被点击
+    </div>
+    <script>
+        //什么是点击穿透现象?
+        //在移动端，当用户在ontouchstart事件监听函数中关闭浮层时，当浮层被关闭后，浮层后面的对应元素也将
+        //会被点击，假设浮层后面的元素是一个连接，当用户点击浮层关闭按钮浮层消失后大约300ms页面同时发生跳转。
+
+        // 需要使用局域网进行调试：最简单的方法就是将需要调试的文件使用http-server服务开启，让电脑使用手机的
+        //热点即可在手机上进行调试。
+
+        //原因分析
+        // 由于触摸屏设备为了区分用户双击缩放，对click事件做了300ms延迟触发，因此用户在移动端触屏设备的操作流程
+        //以及事件触发为:
+        //1. 手指触摸到屏幕，触发touchstart
+        //2. 手指在屏幕短暂停留(如果是移动，触发tousemove)
+        //3. 手指离开屏幕，触发touchend
+        //4. 等待约300ms，若用户在此时间内没有再次触摸屏幕，则接5；否则：进行缩放操作。
+        //5. 300ms后在用户离开的位置触发click事件。
+        //  击穿的根源在第4步。当用户点击关闭让遮罩隐藏后，浏览器在300ms后在原来用户手
+        //指离开的位置触发click事件，此时遮罩不存在了，自然“点击”到后面的元素。
+        let oSpan = document.querySelector('.close')
+        let oMask = document.querySelector('.mask')
+        
+        //1. 将浮层关闭的时间延长。写在touchstart事件中
+        oSpan.addEventListener('touchstart',(event) => {
+            oMask.classList.add('fade')
+            setTimeout(() => {
+                oMask.style.display = 'none'
+            }, 300)
+        })
+        test.addEventListener('click',(event) => {
+            log.innerText = '被点击了'
+        })
+
+        //2. 将浮层关闭的时间延长。写在touchend事件中
+        // oSpan.addEventListener('touchstart',(event) => {
+            
+        // })
+        // oSpan.addEventListener('touchend',(event) => {
+        //     oMask.classList.add('fade')
+        //     setTimeout(() => {
+        //         oMask.style.display = 'none'
+        //     }, 300)
+        // })
+        // test.addEventListener('click',(event) => {
+        //     log.innerText = '被点击了'
+        // })
+
+    </script>
+</body>
+</html>

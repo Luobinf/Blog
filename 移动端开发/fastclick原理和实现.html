@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fastclick的原理和简单实现</title>
+</head>
+
+<body>
+    <div id="delay">click有延迟 </div>
+    <div id="no-delay">touchstart无延迟</div>
+    <div> <a id="link1" href="#1">链接1</a> <a id="link2" href="#2">链接2</a></div>
+    <div id="log"></div>
+
+    <style>
+        body {
+            font-size: 60px;
+        }
+    </style>
+    <script>
+        //什么时候使用?
+        //1. 当移动端因为一些原因未使用<meta name="viewport" content="width=device-width">的时候使用
+
+        //fastclick原理?
+        //  由于不使用meta viewport标签的时候，移动端在触屏时会依次触发touchstart、touchend、click等事件，
+        //从touchstart事件到触发click事件中间的过程大约在300ms。那么只要在touchstart事件触发的时候，通过
+        //DOM自定义事件立即模拟触发一个click事件，并将浏览器在300ms之后真正的click事件阻止掉，就可以解决
+        //300ms延迟的原因了。
+        //  在touchstart事件中阻止默认事件后，后面的touchend事件和click事件就都不会触发了。
+
+        const FastClick = (function () {
+
+            function attach(root) {
+                let targetElement = null
+                root.addEventListener('touchstart', function (event) {
+                    targetElement = event.target
+                })
+                root.addEventListener('touchend', function (event) {
+                    event.preventDefault()
+                    let touch = event.changedTouches[0]
+                    let clickEvent = document.createEvent('MouseEvents')
+                    clickEvent.initMouseEvent('click', true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null)
+                    clickEvent.forwardedTouchEvent = true
+                    targetElement.dispatchEvent(clickEvent)
+                })
+            }
+
+            return { attach }
+        })()
+
+        FastClick.attach(document.body)
+
+        const $ = s => document.querySelector(s)
+        const log = str => $('#log').innerText = str
+
+        let t1, t2
+
+        $('#delay').ontouchstart = e => {
+            t1 = Date.now()
+        }
+
+        $('#delay').onclick = e => {
+            log(Date.now() - t1)
+        }
+
+        $('#no-delay').ontouchstart = e => {
+            e.preventDefault()
+            log('touchstart无延迟')
+        }
+
+        $('#link1').ontouchstart = e => {
+            t2 = Date.now()
+        }
+
+        $('#link2').ontouchstart = e => {
+            t2 = Date.now()
+        }
+
+        window.onhashchange = () => {
+            log(`link ${location.hash}: ${Date.now() - t2}ms`)
+        }
+    </script>
+</body>
+
+</html>
