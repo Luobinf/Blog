@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul > li {
+            padding: 10px 0;
+        }
+        .item_1px {
+            border-bottom: 1px solid #dddddd;
+        }
+        .item_0_5px {
+            border-bottom: 0.5px solid #dddddd;
+        }
+        .item_csstransform::after {
+            content: '';
+            display: block;
+            height: 1px;
+            transform: scaleY(0.5);
+            background: #dddddd;
+            margin-top: 10px;
+        }
+        .item_background::after {
+            content: '';
+            display: block;
+            height: 1px;
+            /*    利用background的线性渐变 50%的背景使用#dddddd颜色，50%的背景使用透明颜色，这样线条看起来 */
+            /* 就比1px要细。 */
+            background: linear-gradient(0deg, #dddddd 50%, transparent 50%);
+            margin-top: 10px;
+        }
+        .item_background_4 {
+            padding-bottom: 10px;
+            margin: 0 10px;
+            background: linear-gradient(to bottom, #ccc .5px, transparent 0), linear-gradient(to left, #ccc .5px, transparent 0), linear-gradient(to right, #ccc .5px, transparent 0), linear-gradient(to top, #ccc .5px, transparent 0);
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li class="item_1px">列表1</li>
+        <li class="item_0_5px">列表2</li>
+        <li class="item_csstransform">列表3</li>
+        <li class="item_background">列表4</li>
+        <li class="item_background_4">列表5</li>
+    </ul>
+    <script>
+        //为什么要实现1px?
+        //  当我们在 CSS 里面写border： 1px solid red;的时候，用户仍然会觉得边线依然很粗不够美观。
+        //那么如何实现比1px更细的边线呢?下面列举几种方案。
+
+        //方案总结
+        //1. 使用viewport整体放大或缩小方案，这样边框也会随着变化。
+        //2. 直接设置0.5px：ios有效，对于部分安卓机型无效。
+        //3. 使用css3 transform属性，给伪元素缩小尺寸。即transform: scaleY(50%); 缺点是最多只能使用两个
+        //伪元素，超过部分需要使用额外的元素来实现边框线。
+        //4. 使用background的linear-gradient：方便、兼容性好。
+    </script>
+</body>
+</html>
