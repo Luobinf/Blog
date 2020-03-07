@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var obj = {
+            name: 'fjq'
+        }
+        function fn() {
+            console.log(this)
+        }
+        //1. 模拟实现call
+        Function.prototype.myCall = function (context) {
+            context = context || window
+            let args = [...arguments].slice(1)
+            context.fn = this
+            let result = context.fn(...args)
+            delete context.fn
+            return result
+        }
+        fn.myCall(obj) //用于改变 this 的指向问题。
+
+        //2. 模拟实现apply
+        Function.prototype.myApply = function (context) {
+            context = context || window
+            context.fn = this
+            let result
+            if (arguments[1]) {
+                result = context.fn(...arguments[1])
+            } else {
+                result = context.fn()
+            }
+            delete context.fn
+            return result
+        }
+        fn.myApply(obj, [10, 20, 30])
+
+
+        //3.  模拟实现bind
+        //要知道bind是用来干嘛的，bind可以给函数绑定this，并且会返回一个
+        //新的函数，这个新的函数call了原来的函数。
+        function foo() {
+            console.log(this)
+            console.log(arguments)
+        }
+        let f = foo.bind(obj, 20)
+        let a = new f(100)  //使用new运算符之后this会指向这个new出来的对象
+        console.log(a)
+
+        Function.prototype.myBind = function (context) {
+            context = context || window
+            let fn = this
+            let args = [...arguments].slice(1)
+            return function F() {
+                if (this instanceof F) {
+                    return new fn(...args, ...arguments)
+                } else {
+                    return fn.call(context, ...args, ...arguments)
+                }
+            }
+        }
+        fn.myBind(obj, 20, 30)(40)
+
+        //4. instanceof：用于判断对象的类型，原理是通过原型链进行判断的。
+        //instanceof运算符用于检测构造函数的prototype属性是否出现在
+        //某个实例对象的原型链上。
+        function F() {
+
+        }
+        var ff = new F()
+        console.log(ff instanceof F) //true
+        console.log(ff instanceof Object) //true
+
+        function myInstanceOf(left, right) {
+            //排除非对象的情况，function也是对象。
+            if (Object.prototype.toString.call(left) === "[object Array]" ||
+                Object.prototype.toString.call(left) === "[object Object]" ||
+                Object.prototype.toString.call(left) === "[object Function]"
+            ) {
+                let prototype = right.prototype
+                left = left.__proto__
+                while (true) {
+                    if (left == null || left == undefined) {
+                        return false
+                    }
+                    if (left === prototype) {
+                        return true
+                    }
+                    left = left.__proto__
+                }
+            } else {
+                return false
+            }
+        }
+        console.log(myInstanceOf(Object, Object)) //true
+        console.log(myInstanceOf([], Array)) //true
+        console.log(myInstanceOf(null, Array)) //false
+        //Object.__proto__ === Function.prototype
+        //Function.prototype.__proto__ === Object.prototype
+    </script>
+</body>
+
+</html>
