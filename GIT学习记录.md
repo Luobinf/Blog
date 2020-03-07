@@ -61,6 +61,40 @@
 
 以上方法就能解决push时本地仓库和远端仓库内容冲突。
 
+## HEAD、master、branch
+这一部分内容需要详细说说，之后会再次补充。
+
+1. 创建**branch**的方法是 **git branch 名称**
+2. 切换**branch**的方法是 **git checkout 名称**，本质上是将 HEAD 指向了当前 branch ，然后再指向当前 branch 的最新 commit
+3. 删除的方式是 **git branch -d 名称**
+
+## push的本质：将branch上传到远程仓库
+实质上，push 做的事是：把当前 branch 的位置（即它指向那个 commit）上传到远程仓库，并把它的路径上的 commits 一并上传。
+push 并不会上传本地的 HEAD 指向；远程仓库的 HEAD 是永远指向默认分支（即 master）
+
+## merge：合并commits
+merge 的意思是「合并」，它做的事也是合并：指定一个 commit，把它合并到当前的 commit 来。具体来讲，merge 做的事是：
+**从目标 commit 和当前 commit （即 HEAD 所指向的 commit）分叉的位置起，把目标 commit 的路径上的所有 commit 的内容一并应用到当前 commit，然后自动生成一个新的 commit。**
+
+如下图：
+![3X6BMF.png](https://s2.ax1x.com/2020/03/07/3X6BMF.png)
+
+HEAD 指向了 master，所以如果这时执行：
+```
+git merge branch1
+```
+Git 会把 5 和 6 这两个 commit 的内容一并应用到 4 上，然后生成一个新的提交，并跳转到提交信息填写的界面：
+
+merge 操作会帮你自动地填写简要的提交信息。在提交信息修改完成后（或者你打算不修改默认的提交信息），就可以退出这个界面，然后这次 merge 就算完成了。
+
+![3X6WRK.png](https://s2.ax1x.com/2020/03/07/3X6WRK.png)
+
+merge 有什么用？最常用的场景有两处：
+1. 合并分支
+当一个 branch 的开发已经完成，需要把内容合并回去时，用 merge 来进行合并
+2. pull 的内部操作
+pull 的实际操作其实是把远端仓库的内容用 fetch 取下来之后，用 merge 来合并。
+
 
 
 
