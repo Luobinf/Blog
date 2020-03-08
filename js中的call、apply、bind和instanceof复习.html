@@ -103,6 +103,26 @@
         console.log(myInstanceOf(null, Array)) //false
         //Object.__proto__ === Function.prototype
         //Function.prototype.__proto__ === Object.prototype
+        
+        //将jsonp封装
+        function jsonp(url) {
+            return new Promise(function(resolve,reject) {
+                let script = document.createElement('script')
+                let name = 'knkkmjugd' + Math.random() * 1000000
+                script.src = `${url}?callback=${name}`
+                window[name] = function(data) {
+                    resolve(data)
+                }
+                script.onload = function(event) {
+                    event.currentTarget.remove()
+                }
+                script.onerror = function() {
+                    event.currentTarget.remove()
+                    reject('发生错误了')
+                }
+                document.body.append(script)
+            })
+        }
     </script>
 </body>
 
