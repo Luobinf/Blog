@@ -20,6 +20,13 @@
 
 以上，4 最后这个确认的过程，是可以带上数据的。
 
+### 使用wireshark进行抓包
+打开wireshark，开始进行抓包，命令行输入 ping www.baidu.com，待页面跳转时，停止进行抓包。
+从下图中可以看到在发生HTTP请求报文之前，的确是要进行TCP三次握手的，
+握手过程就是前面所述。
+
+[![8CocZQ.md.png](https://s2.ax1x.com/2020/03/10/8CocZQ.md.png)](https://imgchr.com/i/8CocZQ)
+
 ### HTTP协议的简单特点
 HTTP协议用于客户端和服务端之间的通信，通过HTTP请求报文和响应报文达到双方的通信目的。
 
