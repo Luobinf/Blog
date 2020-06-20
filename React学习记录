@@ -1,1 +1,90 @@
+1. setState （不可变值，函数式编程）
+
+使用不可变数据，即使用setState改变数据时不能直接修改原来的state中的数据。
+
+例如 this.state = { list: [10,20]} 想要给list数据增加一个值时，以下的方法是不对的：
+
+this.state.list.push(20)
+this.setState({list: this.state.list}) 这样做是不对的，因为push方法会直接修改原来的list，应该生成一个新的list数组(即创建一个新的副本)。
+
+this.setState({list: this.state.list.concat(20)}) 或 this.setState({list: [...this.state.list,20]}) 这样做就正确，concat方法不会修改原来的list数据。
+
+
+/对象使用Object.assign({},this.state.obj,{name: 'jack'}) 或 ...   
+
+
+2. setState是同步还是异步的
+
+可能是异步，可能会被合并
+
+setTimeout中和自定义事件监听函数中是同步的。
+
+//传入对象，会被合并
+this.state = {count: 0}
+
+this.setState({count: this.state.count + 1})
+
+this.setState({count: this.state.count + 1})
+
+this.setState({count: this.state.count + 1})    //最后结果count为1
+
+//函数不会被合并
+this.setState((prevState,props) => {return {count: prevState.count + 1}})
+
+this.setState((prevState,props) => {return {count: prevState.count + 1}}) 
+
+this.setState((prevState,props) => {return {count: prevState.count + 1}})   //最后结果count为3
+
+
+3. 生命周期
+父子组件生命周期，都和Vue类似。
+
+4. class组件和函数式组件有何区别？
+
+函数式组件没有生命周期函数、自己的状态(state)。
+
+5.非受控组件，表单的输入控件中的value不受state的数据变化而变化，即需要操作DOM的时候使用。使用ref。
+
+6. Portals
+Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案。 将组件渲染到父组件以外的地方。（复习时稍微看下就可以了）
+
+7. context（与Vue中的Provide inject类似）
+const ThemeContext = React.createContext('light') 默认值
+
+<ThemeContext.Provider value={this.state.theme}>
+</ThemeContext.Provider>
+
+<ThemeContext.Consumer>
+  { (val) => {} }  //拿到Provider传递过来的数据
+</ThemeContext.Consumer>
+
+8. redux  
+
+9. 异步组件（性能优化）
+React.lazy 和 React.Suspense结合。
+
+Vue中使用import()
+
+10. 性能优化（对于React来说非常重要）
+
+shouldComponentUpdate
+PureComponent 和 React.Memo
+不可变值immutable.js
+
+React默认父组件有更新，则子组件无条件更新。shouldComponentUpdate 默认会返回 true 。与Vue的更新机制不一样，所以对于React来说性能优化更加重要。
+
+使用 shouldComponentUpdate 有时候需要对数据做深度比较（lodash），当数据层级比较深时，也会消耗性能。
+
+PureComponent, 在shouldComponentUpdate钩子中进行了浅比较，只比较第一层的属性，在类组件中使用。
+
+React.Memo在函数组件中使用，也是进行的浅比较。
+
+性能优化总结： 设计React的设计理念。
+
+11. immutable.js
+彻底拥抱不可变值。
+
+
+
+
 
