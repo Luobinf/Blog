@@ -17,7 +17,7 @@ this.setState({list: this.state.list.concat(20)}) 或 this.setState({list: [...t
 
 可能是异步，可能会被合并
 
-setTimeout中和自定义事件监听函数中是同步的。
+setTimeout中和自定义事件的处理函数中是同步的。
 
 //传入对象，会被合并
 this.state = {count: 0}
@@ -37,13 +37,15 @@ this.setState((prevState,props) => {return {count: prevState.count + 1}})   //�
 
 
 3. 生命周期
-父子组件生命周期，都和Vue类似。
+父子组件生命周期，都和Vue类似。挂载阶段：constructor、getDerivedStateFromProps、render、componentDidMount，更新阶段： getDerivedStateFromProps、shouldComponentUpdate、getSnapShotFromUpdate、render、componentDidUpdate（更新阶段），componentWillUnmount（挂载阶段）
+
+其中getDerivedStateFromProps类似于老版本中的componentWillReceiveProps、getSnapShotFromUpdate类似于componentWillUpdate。
 
 4. class组件和函数式组件有何区别？
 
-函数式组件没有生命周期函数、自己的状态(state)。
+函数式组件没有生命周期函数、没有自己的状态(state)、无法实例化。
 
-5.非受控组件，表单的输入控件中的value不受state的数据变化而变化，即需要操作DOM的时候使用。使用ref。
+5.非受控组件，表单的输入控件中的value不受state的数据变化而变化，即需要操作DOM的时候使用，使用ref来获取DOM元素。受控组件的值受到React组件中的state值控制。
 
 6. Portals
 Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案。 将组件渲染到父组件以外的地方。（复习时稍微看下就可以了）
@@ -58,16 +60,22 @@ const ThemeContext = React.createContext('light') 默认值
   { (val) => {} }  //拿到Provider传递过来的数据
 </ThemeContext.Consumer>
 
+组件通信：父组件 => 子组件（prop） 子组件 => 父组件 （父组件向子组件通过 prop 传一个函数，子组件将数据以参数形式传入函数中并调用即可） 父组件向嵌套更深一级的子组件或子组件向父组件传递数据时（context）、redux等。
+
 8. redux  
 
-9. 异步组件（性能优化）
+9. 异步加载组件（性能优化）
 React.lazy 和 React.Suspense结合。
+
+React.lazy() 允许你定义一个动态加载的组件。这有助于缩减 bundle 的体积，并延迟加载在初次渲染时未用到的组件。
+
+Suspense 使得组件可以“等待”某些操作结束后，再进行渲染。目前，Suspense 仅支持的使用场景是：通过 React.lazy 动态加载组件。它将在未来支持其它使用场景，如数据获取等。
 
 Vue中使用import()
 
 10. 性能优化（对于React来说非常重要）
 
-shouldComponentUpdate
+shouldComponentUpdate(nextProps,nextState)
 PureComponent 和 React.Memo
 不可变值immutable.js
 
@@ -75,11 +83,18 @@ React默认父组件有更新，则子组件无条件更新。shouldComponentUpd
 
 使用 shouldComponentUpdate 有时候需要对数据做深度比较（lodash），当数据层级比较深时，也会消耗性能。
 
-PureComponent, 在shouldComponentUpdate钩子中进行了浅比较，只比较第一层的属性，在类组件中使用。
+PureComponent 是在shouldComponentUpdate 钩子中对prop和state进行了浅比较，只比较第一层的属性，若第一层属性的数据一样，则该组件不会重新渲染（render），在类组件中使用。
 
 React.Memo在函数组件中使用，也是进行的浅比较。
 
-性能优化总结： 设计React的设计理念。
+```
+const MyComponent = React.memo(function MyComponent(props) {
+  /* 使用 props 渲染 */
+});
+```
+React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有 useState 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
+
+性能优化总结： 知道React的设计理念。
 
 11. immutable.js
 彻底拥抱不可变值。
