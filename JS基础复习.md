@@ -1,4 +1,4 @@
-# 一. 模块化
+## 一. 模块化
 
 为什么要模块化？解决命名冲突，提高复用性，利于维护。
 
@@ -19,3 +19,22 @@
 
 **ES Module：**
   ES Module 是原生实现的模块化方案，采用异步加载的方式。并且采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化。
+  
+## 二. map\reduce等数组方法
+
+map：对数组的每一个元素做一些操作之后返回一个新的数组，不会改变原数组。
+reduce：对数组中的每个元素执行一个自定义的累计器，将其结果汇总为单个返回值。例如这种用法：arr.reduce((accumulate,current,index,arr) => accumulate + current,initialValue)
+
+```JS
+let arr = [1,2,4]
+arr.map(val => val * 2)  //返回 [2,4,8]
+
+//使用reduce模拟map
+let res = arr.reduce((accumulate,current) => {
+  accumulate.push(current*2)
+  return accumulate;
+},[])
+console.log(res);  //[2,4,8]
+```
+  
+
