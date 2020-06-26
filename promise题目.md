@@ -32,3 +32,47 @@ fetchData1().then(res => {
 })
 ```
 
+```JS
+//实现一个元素先红色两秒在黄色一秒再绿色三秒，不断循环
+
+function red() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve('红灯亮')
+        }, 2000)
+    })
+}
+
+function yellow() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve('黄色亮')
+        }, 1000)
+    })
+}
+
+function green() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve('绿灯亮')
+        }, 3000)
+    })
+}
+    
+(
+    function start() {
+        red().then(res => {
+            console.log(res)
+            return yellow()
+        }).then(res => {
+            console.log(res)
+            return green()
+        }).then(res => {
+            console.log(res)
+            start()
+        })
+    }
+)()
+
+```
+
