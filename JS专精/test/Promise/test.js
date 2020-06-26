@@ -117,7 +117,75 @@ describe("Promise", () => {
             done()
         }, 0)
     })
-    it('2.2.7', () => {
-        
+    it('2.2.7 then 必须返回一个promise', () => {
+        const promise = new Promise((resolve) => {
+            resolve('hi')
+        })
+        const promise2 = promise.then(() => {}, () => {})
+        assert(promise2 instanceof Promise)
+    })
+    it('2.2.7.1 如果onFulfilled或onRejected返回一个值x, 运行 Promise Resolution Procedure [[Resolve]](promise2, x)', (done) => {
+        const promise = new Promise((resolve) => {
+            resolve('hi')
+        })
+        const promise2 = promise.then(() => '成功', () => {})
+        promise2.then(res => {
+            assert.equal(res,'成功')
+            done()
+        })
+    })
+    it('2.2.7.2 success 返回的是Promise实例,且状态是fulfilled', (done) => {
+        const promise = new Promise((resolve) => {
+            resolve('hi')
+        })
+        const fn = sinon.fake()
+        const promise2 = promise.then(() => new Promise(resolve => resolve()))
+        promise2.then(fn)
+        setTimeout(() => {
+            assert(fn.called)  
+            done()          
+        }, 0)
+    })
+    it('2.2.7.2 success 返回的是Promise实例,且状态是rejected', (done) => {
+        const promise = new Promise((resolve, reject) => {
+            resolve('hi')
+        })
+        const fn = sinon.fake()
+        const promise2 = promise.then(() => {
+            return new Promise((resolve, reject) => reject())
+        })
+        promise2.then(null,fn)
+        setTimeout(() => {
+            assert(fn.called)  
+            done()          
+        }, 0)
+    })
+    it('2.2.7.3 如果success或fail抛出异常，promise2 必须被拒绝', (done) => {
+        const promise = new Promise((resolve, reject) => {
+            resolve('hi')
+        })
+        const fn = sinon.fake()
+        const promise2 = promise.then(() => {
+            throw new Error()
+        })
+        promise2.then(null,fn)
+        setTimeout(() => {
+            assert(fn.called)  
+            done()          
+        }, 0)
     })
 })
+
+// var promise = new Promise((resolve, reject) => {
+//     reject(20)
+// })
+
+// promise.then((res) => {
+//     console.log(787)
+// }, (res) => {
+//     console.log('failed')
+// }).then(() => {
+//     console.log('成功了')
+// }, () => {
+//     console.log('失败了')
+// })
