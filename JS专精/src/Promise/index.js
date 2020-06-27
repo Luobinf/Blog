@@ -122,5 +122,5 @@ function nextTick(fn) {
     }
 }
 
-//注意process.nextTick只能在node.js上使用;setImmediate在浏览器中使用
+//注意process.nextTick只能在node.js上使用, 属于微任务;setImmediate也是node.js中才有的,属于宏任务
 module.exports = Promise2
