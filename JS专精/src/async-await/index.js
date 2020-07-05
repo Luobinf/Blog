@@ -1,6 +1,6 @@
 //async await是promise的语法糖
 //以一种同步的方式去写代码,如果await后面的代码不是Promise实例，则会进行包装
-//await后面的代码是异步的
+//await左边和后面的代码是异步的，await右边的代码是同步的，类似于Promise中的入参函数
 // async function fn() {
 //     console.log(1)
 //     const result = await console.log(2)
@@ -54,7 +54,7 @@ new Promise(function (resolve) {
     resolve();
     console.log('promise2')  //立即执行
 }).then(function () {
-    console.log('promise3')  //2.3微任务队列中
+    console.log('promise3')  //2.3 Promise.then 微任务队列中
 })
 console.log('script end')
 

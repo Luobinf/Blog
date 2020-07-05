@@ -2,6 +2,8 @@
  * 
  * @param {需要深拷贝的目标} target 
  */
+//可以使用 JSON.parse(JSON.stringify(object)) 来进行深拷贝：但是这个方法优缺点无能序列化函数，null，undefined，无法解决循环引用。
+
 //注意window对象也有环，window.self = window.self.self =window; 正则表达式也是一个对象，它的原型最终指向的是Objec.prototype
 // {name: 'jack',info: {age: 23,address: 'HZ'}}
 //function fn() {}

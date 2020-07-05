@@ -24,6 +24,18 @@ class Promise2 {
         }
         fn(this.resolve.bind(this),this.reject.bind(this))
     }
+    then(success,fail) {
+        const handle = []
+        if(typeof success === 'function') {
+            handle[0] = success
+        }
+        if(typeof fail === 'function') {
+            handle[1] = fail
+        }
+        handle[2] =  new Promise2(() => {})
+        this.callbacks.push(handle)  //可能会多次调用Promise.then()
+        return handle[2]
+    }
     resolve(result) {
         if(this.state !== 'pending') return //成功或失败函数调用不能超过一次
         this.state = 'fulfilled'
@@ -39,7 +51,7 @@ class Promise2 {
                     handle[2].resolveWith(x)
                 }
             })
-        })  //事实上这里是有问题的，应该是微任务
+        })
     }
     reject(reason) {
         if(this.state !== 'pending') return
@@ -57,18 +69,6 @@ class Promise2 {
                 }
             })
         })
-    }
-    then(success,fail) {
-        const handle = []
-        if(typeof success === 'function') {
-            handle[0] = success
-        }
-        if(typeof fail === 'function') {
-            handle[1] = fail
-        }
-        handle[2] =  new Promise2(() => {})
-        this.callbacks.push(handle)  //可能会多次调用Promise.then()
-        return handle[2]
     }
     resolveWith(x) {
         if(this === x) {
