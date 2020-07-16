@@ -36,5 +36,64 @@ let res = arr.reduce((accumulate,current) => {
 },[])
 console.log(res);  //[2,4,8]
 ```
+
+## 三. 继承
+
+```JS
+class Person {
+  constructor(name, age) {
+      this.name = name
+      this.age = age
+  }
+  run() {
+      console.log(`run~~~`)
+  }
+}
+
+class Man extends Person{
+  constructor(name, age, nickname) {
+      super(name, age)
+      this.nickname = nickname
+  }
+  travel() {
+      console.log(`travel~~~`)
+  }
+}
+
+var man = new Man('jack', 23, 'blackMan')
+        
+function Super(name) {
+    this.name = name
+}
+Super.prototype.travel = function () {
+    console.log(`travel`)
+}
+function Sub(name, age) {
+    Super.call(this, name)
+    this.age = age
+}
+// Sub.prototype = Super.prototype  1. 如果直接这样赋值进行继承的话，那么修改了Sub.prototype之后，Super.prototype 也会跟着修改，因为这是一个引用关系，两者指向同一个对象。
+// Sub.prototype = new Super('jack')  //2. 如果这样做之后，那么Sub.prototype这个原型对象会有父类实例的属性啥的，但是我并不想要父类的属性，只想是一个纯粹的对象，有自己的方法而已。
+Sub.prototype = Object.create(Super.prototype) //3. 使用Object.create可以创建一个对象并将这个对象的原型链接到第一个参数。
+Sub.prototype.constructor = Sub  //将constructor属性指向正确的位置
+Sub.prototype.run = function () {
+    confirm.log(`sub~~~~`)
+}
+var sub = new Sub('jack', 23)
+
+// Polyfill Object.create()——通过polyfill彻底理解。上述的Object.create原理如下
+Object.create = function (proto) {
+    function F() { }
+    F.prototype = proto;
+    return new F();
+}
+function F() {
+}
+F.prototype = Super.prototype
+Sub.prototype = new F()
+Sub.prototype.constructor = Sub
+```
+
+博客: https://juejin.im/entry/5bbf51015188255c3a2d6965
   
 
