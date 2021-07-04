@@ -58,7 +58,7 @@ npm install core-js@2 --save
   ]
 }
 ```
-例子在babel文档中的babel-demo1
+例子在babel文件夹中的babel-demo1
 
 2. useBuiltIns配置成entry时
 
@@ -78,7 +78,7 @@ npm install core-js@2 --save
 当 useBuiltIns 配置成 entry 时，需要你在项目的入口文件中自行导入core.js。
 此时可以看到，与useBuiltIns配置成usage时相比，也进行了按需引入，但是与 usage 不同的是，Babel除了会考虑目标环境缺失的API模块，同时考虑我们项目代码里使用到的ES5+特性。而配置成usage时，只有我们使用到的ES5+特性API在目标环境缺失的时候，Babel才会引入core-js的API补齐模块。
 
-例子在babel文档中的babel-demo2
+例子在babel文件夹中的babel-demo2
 
 3. useBuiltIns配置成false时，或者该选项不进行配置，则默认会是false
 
@@ -96,4 +96,4 @@ npm install core-js@2 --save
 ```
 此时会将所有的pollyfill进行引入。
 
-例子在babel文档中的babel-demo3。
+例子在babel文件夹的babel-demo3。
