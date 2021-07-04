@@ -1,6 +1,6 @@
 ## @babel/preset-env是什么 ?
 
-@babel/preset-env可以允许你使用最新的 js 语法，而不需要你去处理与目标环境相关的语法转化。举个例子说明一下：假设你现在在源代码中写了箭头函数等新语法，那么对于版本比较新的浏览器来说，浏览器本身就支持了这些新特性，那对于版本比较老的浏览器来说，有可能就不支持了，此时你需要将代码转化成浏览器能够支持的版本，向后进行兼容，即polyfill。同时又提供了一些参数选项，可以让你灵活的进行配置。
+@babel/preset-env可以允许你使用最新的 js 语法，而不需要你去处理与目标环境相关的语法转换。同时又提供了一些参数选项，可以让你灵活的进行配置。该包与@babel/polyfill结合使用。目前Babel7.4.0版本以上已经废弃了@babel/polyfill，采用了 core-js/stable (用于 polyfill ECMAScript 特性) 与 regenerator-runtime/runtime (该包用于去转换generator functions)
 
 
 ## @babel/preset-env比较重要的几个配置参数
@@ -94,6 +94,6 @@ npm install core-js@2 --save
   ]
 }
 ```
-此时会将所有的pollyfill进行引入。
+此时会将所有的polyfill进行引入。
 
 例子在babel文件夹的babel-demo3。
